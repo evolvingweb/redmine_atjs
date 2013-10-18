@@ -1,7 +1,9 @@
 jQuery(function(){
   $inputor = jQuery('.wiki-edit').atwho({
     at: "#",
-    tpl: "<li style='${style}' data-value='{{id(${id},${label})}}'>${label}</li>",
+    // TODO support {{issue_details}} macro
+    // tpl: "<li style='${style}' data-value='{{id(${id},${label})}}'>${label}</li>",
+    tpl: "<li style='${style}' data-value='#${id}'>${label}</li>",
     limit: 10, // redmine autocomplete returns ten results
     data: [],
     callbacks: {
