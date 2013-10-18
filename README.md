@@ -15,7 +15,7 @@ cd redmine-atjs
 python tools/simple_http_server.py
 ```
 
-Then visit https://localhost:4443 and install the bookmarklet.
+Then visit [https://localhost:4443](https://localhost:4443) and install the bookmarklet.
 Then test it by activating on an issue page.
 
 ## TODO
