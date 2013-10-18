@@ -1,5 +1,6 @@
-jQuery(function(){
-  $inputor = jQuery('.wiki-edit').atwho({
+(function($){
+$(function(){
+  $inputor = $('.wiki-edit').atwho({
     at: "#",
     // TODO support {{issue_details}} macro
     // tpl: "<li style='${style}' data-value='{{id(${id},${label})}}'>${label}</li>",
@@ -32,21 +33,57 @@ jQuery(function(){
        },
 
       remote_filter: function(query, callback) {
+        if (query.length < 2) {
+          return;
+        }
         var projectMatches = [];
         var globalMatches = [];
 
+
+        if (typeof(window.projectXhr) !== "undefined") {
+          window.projectXhr.abort();
+        }
+        window.projectXhr = queryRedmine(query, true, function(matches) {
+          projectMatches = matches;
+          displayResults();
+        });
+        if (typeof(window.globalXhr) !== "undefined") {
+          window.globalXhr.abort();
+        }
+        window.globalXhr = queryRedmine(query, false, function(matches) {
+          globalMatches = matches;
+          displayResults();
+        });
+
+        function displayResults() {
+          var results = [];
+          var projectMatchIds = {}; // to prevent duplication
+          $.each(projectMatches, function() {
+            this.style = 'border-left: 2px solid red;';
+            projectMatchIds[this.id] = true;
+            results.push(this);
+          });
+          $.each(globalMatches, function() {
+            if (!projectMatchIds[this.id]) {
+              results.push(this);
+            }
+          });
+          // its safe to run this multiple times
+          callback(results);
+        }
+
         function queryRedmine(query, projectScope, callback) {
-          jQuery.ajax({
+          var xhr = $.ajax({
             url:'/issues/auto_complete',
             type:'post', // TODO: redmine 2.3 only works with GET
             data: {
               q:query,
-              project_id: jQuery('#main-menu .overview').attr('href').replace(/.*\//,''),
+              project_id: $('#main-menu .overview').attr('href').replace(/.*\//,''),
               scope: projectScope ? '' : 'all'
             },
             headers: {
                //required for ajax requests, at least with redmine 1.2; else redmine kills current session
-              "X-CSRF-Token": jQuery('meta[name=csrf-token]').attr('content'),
+              "X-CSRF-Token": $('meta[name=csrf-token]').attr('content'),
             }
           }).done(function(data) {
             var matches = [];
@@ -60,8 +97,8 @@ jQuery(function(){
              *    https://github.com/redmine/redmine/blob/1.4-stable/app/views/auto_completes/issues.html.erb
              */
             if (typeof(data) == "string") { // redmine <= 1.4 refuses to provide json
-              jQuery('li',data).each(function() { 
-                var li = jQuery(this);
+              $('li',data).each(function() { 
+                var li = $(this);
                 // skipping the dummy "none" list item
                 if( li.text() !== 'none') {
                   matches.push( { id: li.attr('id'), label: li.text()});
@@ -73,34 +110,10 @@ jQuery(function(){
             matches = matches.reverse();
             callback(matches);
           });
-        }
-
-        queryRedmine(query, true, function(matches) {
-          projectMatches = matches;
-          displayResults();
-        });
-        queryRedmine(query, false, function(matches) {
-          globalMatches = matches;
-          displayResults();
-        });
-
-        function displayResults() {
-          var results = [];
-          var projectMatchIds = {}; // to prevent duplication
-          jQuery.each(projectMatches, function() {
-            this.style = 'border-left: 2px solid red;';
-            projectMatchIds[this.id] = true;
-            results.push(this);
-          });
-          jQuery.each(globalMatches, function() {
-            if (!projectMatchIds[this.id]) {
-              results.push(this);
-            }
-          });
-          // its safe to run this multiple times
-          callback(results);
+          return xhr;
         }
       }
     }
   });
 });
+})(jQueryAtJs);
