@@ -75,41 +75,14 @@ $(function(){
         function queryRedmine(query, projectScope, callback) {
           var xhr = $.ajax({
             url:'/issues/auto_complete',
-            type:'post', // TODO: redmine 2.3 only works with GET
+            type:'get',
+            dataType:'json',
             data: {
               q:query,
               project_id: $('#main-menu .overview').attr('href').replace(/.*\//,''),
               scope: projectScope ? '' : 'all'
-            },
-            headers: {
-               //required for ajax requests, at least with redmine 1.2; else redmine kills current session
-              "X-CSRF-Token": $('meta[name=csrf-token]').attr('content'),
             }
-          }).done(function(data) {
-            var matches = [];
-
-            /*  
-             *  For redmine trunk format, see:
-             *    https://github.com/redmine/redmine/blob/master/app/controllers/auto_completes_controller.rb
-             *   https://github.com/redmine/redmine/blob/master/app/views/auto_completes/issues.html.erb
-             *  For redmine 1.4 format, see: 
-             *    https://github.com/redmine/redmine/blob/1.4-stable/app/controllers/auto_completes_controller.rb
-             *    https://github.com/redmine/redmine/blob/1.4-stable/app/views/auto_completes/issues.html.erb
-             */
-            if (typeof(data) == "string") { // redmine <= 1.4 refuses to provide json
-              $('li',data).each(function() { 
-                var li = $(this);
-                // skipping the dummy "none" list item
-                if( li.text() !== 'none') {
-                  matches.push( { id: li.attr('id'), label: li.text()});
-                }
-              });
-            } else {  // more recent versions of redmine give us json ;)
-              matches = data;
-            }
-            matches = matches.reverse();
-            callback(matches);
-          });
+          }).done(callback); 
           return xhr;
         }
       }
