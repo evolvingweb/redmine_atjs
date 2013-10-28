@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+site 'http://community.opscode.com/api/v1'
+
+# cookbook 'redmine', :git => "https://github.com/dergachev/chef_redmine.git"
+cookbook 'redmine', :path => "./site-cookbooks/redmine"
