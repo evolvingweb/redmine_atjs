@@ -4,7 +4,7 @@ class AtJsHook < Redmine::Hook::ViewListener
   def view_layouts_base_html_head(context={})
     return unless ["WikiController", "IssuesController"].include?(context[:controller].class.name)
 
-    js_files = %w{jquery.min.js jquery.atwho.js jquery.noconflict.js redmine-atjs.js}
+    js_files = %w{jquery.atwho.js redmine-atjs.js}
     js_files.map do |file| 
       javascript_include_tag(file, :plugin=> 'redmine_atjs')
     end

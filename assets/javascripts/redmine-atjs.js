@@ -89,4 +89,4 @@ $(function(){
     }
   });
 });
-})(jQueryAtJs);
+})(jQuery);

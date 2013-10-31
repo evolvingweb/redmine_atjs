@@ -1,1 +1,0 @@
-jQueryAtJs = jQuery.noConflict(true);
