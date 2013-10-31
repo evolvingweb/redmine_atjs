@@ -2,5 +2,7 @@
 
 site 'http://community.opscode.com/api/v1'
 
-# cookbook 'redmine', :git => "https://github.com/dergachev/chef_redmine.git"
-cookbook 'redmine', :path => "./site-cookbooks/redmine"
+cookbook 'redmine', :git => "https://github.com/dergachev/chef_redmine.git"
+
+## Uncomment the following to hack at chef_redmine cookbook
+# cookbook 'redmine', :path => "./site-cookbooks/redmine"

@@ -1,8 +1,7 @@
 # vi: set ft=ruby :
 
 Vagrant.require_plugin "vagrant-omnibus" # see https://github.com/locomote/gusteau/pull/41#issuecomment-26941842
-Vagrant.require_plugin "gusteau"
-# Vagrant.require_plugin "cachier"  # optional
+Vagrant.require_plugin "cachier"  # optional, comment this out if you'd prefer
 
 Vagrant.configure('2') do |config|
   # config.ssh.forward_agent = true # enable if deploying from private repo
@@ -13,8 +12,7 @@ Vagrant.configure('2') do |config|
 
   config.omnibus.chef_version = '11.6.0'
 
-  # vagrant-cachier plugin will greatly speed up your provisions
-  config.cache.auto_detect = true
+  config.cache.auto_detect = true  # vagrant-cachier plugin greatly speeds up provisions
 
   config.vm.provision :shell, :inline => "apt-get update; apt-get install -y vim curl git"
   
