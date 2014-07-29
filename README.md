@@ -2,7 +2,7 @@
 
 Redmine plugin that integrates [At.js library](http://ichord.github.io/At.js/) to enable auto-completion
 based on issue titles, while editing wiki and issue pages.
-![](https://raw.githubusercontent.com/dergachev/redmine_atjs/master/assets/images/redmine_atjs_demo.gif)
+<img src="https://raw.githubusercontent.com/dergachev/redmine_atjs/master/assets/images/redmine_atjs_demo.gif" width=500 />
 
 ## Installation
 
