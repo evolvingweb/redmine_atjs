@@ -6,7 +6,7 @@ based on issue titles, while editing wiki and issue pages.
 
 ## Installation
 
-Tested with Redmine 2.3. For use with redmine 1.x, use the branch "1.x".
+Tested with Redmine 3.4 and 4.1
 
 ```bash
 cd /opt/redmine
