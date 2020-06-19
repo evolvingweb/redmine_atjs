@@ -199,5 +199,51 @@
         $(selector).atwho(doubleHashConfig);
       });
     });
+
+    // Integration with redmine checklists.
+    const addAtJsOnce = function($element) {
+      if (!$element.hasClass('at-js-added')) {
+        $element.atwho(config);
+        $element.atwho(doubleHashConfig);
+        $element.addClass('at-js-added');
+        addKeypressOnce();
+        addClickOnce();
+      }
+    };
+
+    const addKeypressOnce = function() {
+      $('input.edit-box').each(function() {
+        if (!$(this).hasClass('at-js-keydown-added')) {
+          $(this).on('keydown', function(event) {
+            if (event.which == 13) {
+              setTimeout(function() {
+                $('input.edit-box').each(function() {
+                  addAtJsOnce($(this));
+                });
+              }, 100);
+            }
+          });
+          $(this).addClass('at-js-keydown-added');
+        }
+      });
+    };
+
+    const addClickOnce = function() {
+      $('.save-new-by-button').each(function() {
+        if (!$(this).hasClass('at-js-click-added')) {
+          $(this).on('click', function(event) {
+            setTimeout(function() {
+              $('input.edit-box').each(function() {
+                addAtJsOnce($(this));
+              });
+            }, 100);
+          });
+          $(this).addClass('at-js-click-added');
+        }
+      });
+    };
+
+    addAtJsOnce($('.checklist-edit .edit-box'));
+
   });
 })(jQuery);
