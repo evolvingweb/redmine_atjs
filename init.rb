@@ -1,6 +1,7 @@
 require 'redmine'
-require File.dirname(__FILE__) + '/lib/atjs'
-
+Rails.configuration.to_prepare do
+  require_dependency 'atjs'
+end
 Redmine::Plugin.register :redmine_atjs do
   name "Redmine AtJS Integration"
   author 'Alex Dergachev'
